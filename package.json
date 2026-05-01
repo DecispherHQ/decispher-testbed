@@ -1,0 +1,25 @@
+{
+  "name": "acme-platform",
+  "version": "1.0.0",
+  "description": "Core platform services — context pipeline, auth, analytics",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "fastify": "^4.28.0",
+    "drizzle-orm": "^0.30.0",
+    "pg": "^8.11.0",
+    "pgvector": "^0.2.0",
+    "redis": "^4.6.0",
+    "bullmq": "^5.4.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0",
+    "@types/pg": "^8.11.0",
+    "@types/node": "^20.0.0"
+  }
+}
