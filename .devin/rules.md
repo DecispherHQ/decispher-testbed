@@ -152,8 +152,8 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 ### Defer Microservices Adoption, Maintain Monorepo Architecture
 
 - **Severity:** HIGH
-- **Rule:** To defer the adoption of a microservices architecture and continue with a monorepo architecture utilizing shared packages. The decision to revisit microservices will be made when the team size reaches 8 or more members.
-- **Rationale:** An earlier attempt (Phase 1) to split the recorder and analyzer into separate gRPC services resulted in brutal deployment complexity for a 3-person team. This led to approximately 40% of the team's time being spent debugging inter-service authentication and network failures, making it unmanageable for the current team size.
+- **Rule:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
+- **Rationale:** Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.
 - **Tags:** architecture, microservices, monorepo, team-size, deployment
 
 **Alternatives considered (rejected):**
