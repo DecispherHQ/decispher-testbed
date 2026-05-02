@@ -980,34 +980,17 @@
   "conditions": [
     {
       "type": "file",
-      "pattern": "**/*.{proto,go,ts,js,py,java,cs,yaml,yml,json,Dockerfile}",
+      "pattern": "**/*",
       "content_rules": [
         {
           "mode": "regex",
-          "start": 0,
-          "pattern": "(^|\\W)(new|separate|standalone)\\s+(grpc|microservice|distributed)\\s+(service|api|component|deployment)($|\\W)",
-          "patterns": []
-        },
-        {
-          "mode": "regex",
-          "start": 0,
-          "pattern": "(^|\\W)(recorder|analyzer)\\s+service\\s+(definition|interface|deployment)($|\\W)",
-          "patterns": []
-        },
-        {
-          "mode": "string",
-          "patterns": [
-            "GrpcServiceBuilder",
-            "MicroserviceClient",
-            "ServiceDiscoveryRegistration",
-            "ApiGatewayConfiguration"
-          ]
+          "start": 1,
+          "pattern": "(?i)grpc|microservice|service-mesh|distributed-tracing"
         }
-      ],
-      "content_match_mode": "any"
+      ]
     }
   ],
-  "match_mode": "any"
+  "match_mode": "all"
 }
 ```
 
