@@ -55,8 +55,8 @@
 - **Plan to Migrate Application Infrastructure from Railway to AWS ECS:** The trigger metric for initiating the AWS migration has been adjusted from 20 paying customers to 30 paying customers. The Q3 2026 timeline for the migration still holds.
   *(This adjustment is due to Railway costs being more predictable than initially expected. Additionally, the VPC isolation requirement, which was a significant factor, only applies to enterprise customers, a segment we are targeting at a later stage.)*
 
-- **Defer Microservices Adoption, Maintain Monorepo Architecture:** To defer the adoption of a microservices architecture and continue with a monorepo architecture utilizing shared packages. The decision to revisit microservices will be made when the team size reaches 8 or more members.
-  *(An earlier attempt (Phase 1) to split the recorder and analyzer into separate gRPC services resulted in brutal deployment complexity for a 3-person team. This led to approximately 40% of the team's time being spent debugging inter-service authentication and network failures, making it unmanageable for the current team size.)*
+- **Defer Microservices Adoption, Maintain Monorepo Architecture:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
+  *(Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.)*
 
 - **Standardize on PostgreSQL and Redis; Prohibit MongoDB:** MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
   *(ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.)*
