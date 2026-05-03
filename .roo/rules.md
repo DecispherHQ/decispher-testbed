@@ -3,6 +3,10 @@
 
 ## ⚠️ Critical Rules — Do Not Violate
 
+- **Migrate core decision store from PostgreSQL to MongoDB:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+  *(MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.)*
+  Files: context-store/, package.json
+
 - **Migrate email service to Zoho and update SMTP infrastructure:** Migrate all email services to Zoho and update the SMTP server infrastructure, including the implementation of new routing rules to block any traffic to the legacy SMTP server.
   *(The team decided to move to Zoho to consolidate mailing services and address the limitations or overhead associated with the existing legacy SMTP infrastructure.)*
   Files: infrastructure/mail, services/smtp, config/email_routing
@@ -86,9 +90,6 @@
 
 - **Enforce RFC 7807 for Internal API Error Formats:** All internal API routes must adhere to the RFC 7807 error format, consistent with public-facing API routes.
   *(Inconsistent error formats, specifically plain strings from internal routes, prevent AI tools from reliably parsing and analyzing errors, leading to broken analysis workflows.)*
-
-- **Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-  *(The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.)*
 
 - **Use cosine distance over L2 for semantic text embedding similarity with pgvector HNSW:** We decided to use cosine distance for semantic similarity search of text embeddings with pgvector HNSW for deduplication.
   *(Cosine distance is invariant to vector magnitude, meaning it only considers the direction of vectors. This property is precisely what is desired for semantic similarity of text embeddings, as it allows for accurate comparison of semantic meaning regardless of variations in embedding vector norms. L2 (Euclidean) distance, on the other hand, would incorrectly penalize vectors with different magnitudes, even if they share the same semantic direction.)*
