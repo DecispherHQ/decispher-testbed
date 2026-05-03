@@ -8,6 +8,12 @@ Violating these decisions requires explicit approval.
 
 ## Active Decisions
 
+### Migrate core decision store from PostgreSQL to MongoDB (HIGH)
+- **Decision:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+- **Rationale:** MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.
+- **Affected files:** `context-store/`, `package.json`
+- **Do NOT:** Keep PostgreSQL context-store (It lacked the necessary write throughput and schema flexibility required for the evolving core pipeline.)
+
 ### Migrate email service to Zoho and update SMTP infrastructure (HIGH)
 - **Decision:** Migrate all email services to Zoho and update the SMTP server infrastructure, including the implementation of new routing rules to block any traffic to the legacy SMTP server.
 - **Rationale:** The team decided to move to Zoho to consolidate mailing services and address the limitations or overhead associated with the existing legacy SMTP infrastructure.
@@ -102,11 +108,6 @@ Violating these decisions requires explicit approval.
 - **Decision:** Each LLM pipeline step (detection, extraction, formatting) has its own provider configuration managed via environment variables. An 'effort mode' concept allows overriding these configurations per company at request time, defining specific LLM models for different quality/cost tiers: Saver uses gemini-flash, Balanced mixes gemini-flash, claude-haiku, and gpt-4o-mini, Pro uses claude-sonnet for extraction, and Super uses claude-opus.
 - **Rationale:** The strategy is designed to provide flexibility and optimization across different pipeline steps and 'effort modes'. By configuring providers per step and allowing overrides based on company effort modes, the system can balance cost, performance, and model quality according to specific requirements, from 'Saver' (likely cost-optimized) to 'Super' (likely highest quality/cost). The multi-provider abstraction facilitates this dynamic selection.
 - **Affected files:** `packages/analyzer/`
-
-### Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing (MEDIUM)
-- **Decision:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-- **Rationale:** The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.
-- **Affected files:** `packages/decision-store/src/schema.ts`
 
 ### We use PostgreSQL with pgvector for all data storage (CRITICAL)
 - **Decision:** After evaluating MongoDB, DynamoDB, and PostgreSQL, we chose PostgreSQL 16 with pgvector HNSW indexes. Reason: vector similarity search, ACID guarantees, and single DB for both structured data and embeddings. 
