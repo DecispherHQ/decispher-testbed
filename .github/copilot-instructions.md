@@ -3,24 +3,24 @@
 
 When generating code for this project, follow these rules:
 
-1. Migrate all email services to Zoho and update the SMTP server infrastructure, including the implementation of new routing rules to block any traffic to the legacy SMTP server.
-2. Switch from the third-party Shipsy provider to an in-house developed mapping event system.
-3. We have decided to officially discontinue the use of RFC 7807 (Problem Details for HTTP APIs) for all API error responses moving forward.
-4. All new vector indexes must be created using the HNSW algorithm. Existing IVFFlat indexes (specifically in the llm_cache table) are to be migrated to HNSW in Sprint 16.
-5. Adopt the HIGH severity specification as the authoritative version for the RFC 7807 error format, which includes fields: type, title, status, detail, and instance.
-6. Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
-7. Establish explicit provider fallback orderings: For extraction, use Anthropic → DeepSeek → OpenAI. For detection, use Google → OpenAI → DeepSeek.
-8. The team will migrate from AWS ECS to AWS EKS for container orchestration.
-9. We have standardized on cosine distance (using the <=> operator in pgvector) for all similarity search operations.
-10. MongoDB is strictly prohibited for use in core pipeline services (including the core decision pipeline, authentication, and the context store). These services must exclusively use PostgreSQL 16 and Redis. Any deviation requires a formal ADR.
-11. The core pipeline must exclusively use PostgreSQL 16 with pgvector and Redis; the use of MongoDB is strictly prohibited.
-12. Use PostgreSQL with pgvector and HNSW indexes as the standard solution for primary datastore and vector search operations.
-13. Use MongoDB Atlas specifically for the analytics event ingestion pipeline, while keeping all other core application data in PostgreSQL.
-14. The team decided to discontinue the use of EventStoreDB and removed event sourcing as an architectural pattern following the migration back to a monorepo.
-15. All internal API routes must adhere to the RFC 7807 error format, consistent with public-facing API routes.
-16. We will use MongoDB for the analytics events pipeline, provisioning a MongoDB Atlas cluster to handle the data.
-17. Each LLM pipeline step (detection, extraction, formatting) has its own provider configuration managed via environment variables. An 'effort mode' concept allows overriding these configurations per company at request time, defining specific LLM models for different quality/cost tiers: Saver uses gemini-flash, Balanced mixes gemini-flash, claude-haiku, and gpt-4o-mini, Pro uses claude-sonnet for extraction, and Super uses claude-opus.
-18. We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
+1. Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+2. Migrate all email services to Zoho and update the SMTP server infrastructure, including the implementation of new routing rules to block any traffic to the legacy SMTP server.
+3. Switch from the third-party Shipsy provider to an in-house developed mapping event system.
+4. We have decided to officially discontinue the use of RFC 7807 (Problem Details for HTTP APIs) for all API error responses moving forward.
+5. All new vector indexes must be created using the HNSW algorithm. Existing IVFFlat indexes (specifically in the llm_cache table) are to be migrated to HNSW in Sprint 16.
+6. Adopt the HIGH severity specification as the authoritative version for the RFC 7807 error format, which includes fields: type, title, status, detail, and instance.
+7. Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
+8. Establish explicit provider fallback orderings: For extraction, use Anthropic → DeepSeek → OpenAI. For detection, use Google → OpenAI → DeepSeek.
+9. The team will migrate from AWS ECS to AWS EKS for container orchestration.
+10. We have standardized on cosine distance (using the <=> operator in pgvector) for all similarity search operations.
+11. MongoDB is strictly prohibited for use in core pipeline services (including the core decision pipeline, authentication, and the context store). These services must exclusively use PostgreSQL 16 and Redis. Any deviation requires a formal ADR.
+12. The core pipeline must exclusively use PostgreSQL 16 with pgvector and Redis; the use of MongoDB is strictly prohibited.
+13. Use PostgreSQL with pgvector and HNSW indexes as the standard solution for primary datastore and vector search operations.
+14. Use MongoDB Atlas specifically for the analytics event ingestion pipeline, while keeping all other core application data in PostgreSQL.
+15. The team decided to discontinue the use of EventStoreDB and removed event sourcing as an architectural pattern following the migration back to a monorepo.
+16. All internal API routes must adhere to the RFC 7807 error format, consistent with public-facing API routes.
+17. We will use MongoDB for the analytics events pipeline, provisioning a MongoDB Atlas cluster to handle the data.
+18. Each LLM pipeline step (detection, extraction, formatting) has its own provider configuration managed via environment variables. An 'effort mode' concept allows overriding these configurations per company at request time, defining specific LLM models for different quality/cost tiers: Saver uses gemini-flash, Balanced mixes gemini-flash, claude-haiku, and gpt-4o-mini, Pro uses claude-sonnet for extraction, and Super uses claude-opus.
 19. After evaluating MongoDB, DynamoDB, and PostgreSQL, we chose PostgreSQL 16 with pgvector HNSW indexes. Reason: vector similarity search, ACID guarantees, and single DB for both structured data and embeddings. 
 20. We decided to use cosine distance for semantic similarity search of text embeddings with pgvector HNSW for deduplication.
 21. Implemented Redis semantic caching for LLM embedding calls. The cache key is a hash of the input text, model, and provider. The cache entries have a Time-To-Live (TTL) of 1 hour.
