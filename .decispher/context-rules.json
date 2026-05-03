@@ -1,7 +1,7 @@
 {
   "$schema": "https://decispher.dev/schemas/context-rules/v1.json",
   "specVersion": "1.0.0",
-  "generatedAt": "2026-05-02T16:27:33.417Z",
+  "generatedAt": "2026-05-03T12:59:23.532Z",
   "companyId": "1489dcdc-ef7f-4cc5-b0cb-b453efa059f4",
   "meta": {
     "totalRules": 27,
@@ -16,13 +16,66 @@
     },
     "rulesBySeverity": {
       "CRITICAL": 3,
-      "HIGH": 14,
-      "MEDIUM": 10,
+      "HIGH": 15,
+      "MEDIUM": 9,
       "LOW": 0
     },
     "generator": "decispher-ai-blocker@1.0.0"
   },
   "rules": [
+    {
+      "id": "5ee33115-b524-4ffe-acc3-2162a04c0d59",
+      "type": "decision",
+      "title": "Migrate core decision store from PostgreSQL to MongoDB",
+      "problem": "Current PostgreSQL-based context-store cannot handle the required write throughput and lacks the schema flexibility needed for the decision storage pipeline.",
+      "decision": "Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.",
+      "rationale": "MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.",
+      "severity": "HIGH",
+      "status": "active",
+      "confidence": 0.974,
+      "affectedFiles": [
+        "context-store/",
+        "package.json"
+      ],
+      "tags": [
+        "mongodb",
+        "postgresql",
+        "database",
+        "migration",
+        "backend"
+      ],
+      "alternatives": [
+        {
+          "option": "Keep PostgreSQL context-store",
+          "reasonRejected": "It lacked the necessary write throughput and schema flexibility required for the evolving core pipeline."
+        }
+      ],
+      "sources": [
+        {
+          "type": "code-change",
+          "confidence": 0.95,
+          "ref": {
+            "priority": "low",
+            "threadTs": "19",
+            "channelId": "github:DecispherHQ/decispher-testbed",
+            "sourceUrl": "https://github.com/DecispherHQ/decispher-testbed/pull/19",
+            "channelName": "PR #19",
+            "slackTeamId": "github:DecispherHQ",
+            "triggeredBy": null,
+            "detectionMethod": "passive",
+            "triggeredByName": null
+          },
+          "snippet": "Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities."
+        }
+      ],
+      "supersededBy": "f2770524-250d-48f2-bf4c-ea54e9744ada",
+      "enforcement": null,
+      "createdAt": "2026-05-03T00:03:02.058Z",
+      "updatedAt": "2026-05-03T11:59:59.165Z",
+      "version": 1,
+      "createdBy": "github-pr-author",
+      "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
+    },
     {
       "id": "e9097831-0c7b-43f1-895a-b115dd36c20b",
       "type": "decision",
@@ -1006,57 +1059,6 @@
       "enforcement": null,
       "createdAt": "2026-04-18T21:08:43.793Z",
       "updatedAt": "2026-04-18T21:09:50.739Z",
-      "version": 1,
-      "createdBy": "U05F9P78LTG",
-      "reviewedBy": "U05F9P78LTG"
-    },
-    {
-      "id": "f2770524-250d-48f2-bf4c-ea54e9744ada",
-      "type": "decision",
-      "title": "Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing",
-      "problem": null,
-      "decision": "We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.",
-      "rationale": "The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.",
-      "severity": "MEDIUM",
-      "status": "active",
-      "confidence": 0.48,
-      "affectedFiles": [
-        "packages/decision-store/src/schema.ts"
-      ],
-      "tags": [
-        "vector-database",
-        "embeddings",
-        "PostgreSQL",
-        "HNSW",
-        "OpenAI",
-        "text-embedding-3-small"
-      ],
-      "alternatives": [],
-      "sources": [
-        {
-          "type": "slack",
-          "confidence": 0.48,
-          "ref": {
-            "priority": "high",
-            "threadTs": "1776545993.253939",
-            "channelId": "C0ALJ121XLZ",
-            "channelName": "decispher-test-1",
-            "triggeredBy": "U05F9P78LTG",
-            "detectionMethod": "explicit"
-          }
-        }
-      ],
-      "supersededBy": null,
-      "enforcement": {
-        "blockOnViolation": false,
-        "requiresExplicitOverride": false,
-        "filePatterns": [
-          "packages/decision-store/src/schema.ts"
-        ],
-        "exemptPatterns": []
-      },
-      "createdAt": "2026-04-18T21:00:58.211Z",
-      "updatedAt": "2026-04-18T21:01:44.258Z",
       "version": 1,
       "createdBy": "U05F9P78LTG",
       "reviewedBy": "U05F9P78LTG"
