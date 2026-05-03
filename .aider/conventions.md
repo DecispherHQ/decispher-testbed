@@ -4,6 +4,54 @@
 These are the active engineering decisions for this repository.
 Aider should follow all of these conventions when making changes.
 
+## Mongodb
+
+### Migrate core decision store from PostgreSQL to MongoDB
+
+**Convention:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+
+**Why:** MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.
+
+> ⚠️ This is a **HIGH** priority rule — do not violate it.
+
+**Relevant files:** `context-store/`, `package.json`
+
+### Use MongoDB Atlas for analytics event ingestion
+
+**Convention:** MongoDB is strictly prohibited for use in core pipeline services (including the core decision pipeline, authentication, and the context store). These services must exclusively use PostgreSQL 16 and Redis. Any deviation requires a formal ADR.
+
+**Why:** To maintain architectural integrity and prevent fragmentation in the core tech stack. Previous attempts to introduce MongoDB for event queues nearly caused instability, highlighting the need for a hard, enforceable constraint.
+
+**Relevant files:** `analytics/storage`, `infrastructure/database-policy`
+
+### Use MongoDB Atlas for schemaless analytics webhook storage
+
+**Convention:** Use MongoDB Atlas specifically for the analytics event ingestion pipeline, while keeping all other core application data in PostgreSQL.
+
+**Why:** MongoDB Atlas provides the necessary horizontal sharding and schemaless structure to handle the required 50k write operations per second, whereas PostgreSQL performance degrades under this load.
+
+> ⚠️ This is a **HIGH** priority rule — do not violate it.
+
+**Relevant files:** `services/analytics-webhook-handler`, `infrastructure/database-clusters`
+
+### Use MongoDB for Analytics Events Pipeline
+
+**Convention:** We will use MongoDB for the analytics events pipeline, provisioning a MongoDB Atlas cluster to handle the data.
+
+**Why:** MongoDB offers 10x the write throughput compared to PostgreSQL for high-cardinality event data, which is essential to meet the current scale requirements. The previous constraint was established before these new scale demands emerged.
+
+> ⚠️ This is a **HIGH** priority rule — do not violate it.
+
+**Relevant files:** `packages/api/src/analytics/`
+
+### Prohibition of MongoDB in the Tech Stack for Analytics Events
+
+**Convention:** MongoDB is strictly prohibited from being integrated into the current technology stack, including for analytics events.
+
+**Why:** There is an active and non-negotiable architectural constraint against MongoDB in the stack due to the critical requirement for ACID compliance across all billing and user data. MongoDB does not satisfy this fundamental requirement.
+
+> ⚠️ This is a **CRITICAL** priority rule — do not violate it.
+
 ## Email
 
 ### Migrate email service to Zoho and update SMTP infrastructure
@@ -118,44 +166,6 @@ Aider should follow all of these conventions when making changes.
 
 **Why:** Cosine distance is invariant to vector magnitude, meaning it only considers the direction of vectors. This property is precisely what is desired for semantic similarity of text embeddings, as it allows for accurate comparison of semantic meaning regardless of variations in embedding vector norms. L2 (Euclidean) distance, on the other hand, would incorrectly penalize vectors with different magnitudes, even if they share the same semantic direction.
 
-## Mongodb
-
-### Use MongoDB Atlas for analytics event ingestion
-
-**Convention:** MongoDB is strictly prohibited for use in core pipeline services (including the core decision pipeline, authentication, and the context store). These services must exclusively use PostgreSQL 16 and Redis. Any deviation requires a formal ADR.
-
-**Why:** To maintain architectural integrity and prevent fragmentation in the core tech stack. Previous attempts to introduce MongoDB for event queues nearly caused instability, highlighting the need for a hard, enforceable constraint.
-
-**Relevant files:** `analytics/storage`, `infrastructure/database-policy`
-
-### Use MongoDB Atlas for schemaless analytics webhook storage
-
-**Convention:** Use MongoDB Atlas specifically for the analytics event ingestion pipeline, while keeping all other core application data in PostgreSQL.
-
-**Why:** MongoDB Atlas provides the necessary horizontal sharding and schemaless structure to handle the required 50k write operations per second, whereas PostgreSQL performance degrades under this load.
-
-> ⚠️ This is a **HIGH** priority rule — do not violate it.
-
-**Relevant files:** `services/analytics-webhook-handler`, `infrastructure/database-clusters`
-
-### Use MongoDB for Analytics Events Pipeline
-
-**Convention:** We will use MongoDB for the analytics events pipeline, provisioning a MongoDB Atlas cluster to handle the data.
-
-**Why:** MongoDB offers 10x the write throughput compared to PostgreSQL for high-cardinality event data, which is essential to meet the current scale requirements. The previous constraint was established before these new scale demands emerged.
-
-> ⚠️ This is a **HIGH** priority rule — do not violate it.
-
-**Relevant files:** `packages/api/src/analytics/`
-
-### Prohibition of MongoDB in the Tech Stack for Analytics Events
-
-**Convention:** MongoDB is strictly prohibited from being integrated into the current technology stack, including for analytics events.
-
-**Why:** There is an active and non-negotiable architectural constraint against MongoDB in the stack due to the critical requirement for ACID compliance across all billing and user data. MongoDB does not satisfy this fundamental requirement.
-
-> ⚠️ This is a **CRITICAL** priority rule — do not violate it.
-
 ## Postgresql
 
 ### Prohibit MongoDB and mandate PostgreSQL for core pipelines
@@ -229,16 +239,6 @@ Aider should follow all of these conventions when making changes.
 **Why:** This approach allows companies with high context volume (Tier 3+) to pay extra for Claude-Sonnet's accuracy where needed, while companies with tighter budgets can use more cost-effective options like Gemini-Flash for all steps. It also decouples our infrastructure from individual LLM vendor stability and enables independent contract negotiations with different providers (Anthropic, OpenAI, Google).
 
 > ⚠️ This is a **HIGH** priority rule — do not violate it.
-
-## Vector-database
-
-### Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing
-
-**Convention:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-
-**Why:** The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.
-
-**Relevant files:** `packages/decision-store/src/schema.ts`
 
 ## Redis
 
