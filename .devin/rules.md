@@ -46,6 +46,17 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 **Alternatives considered (rejected):**
 - ~~MongoDB~~ — MongoDB was rejected because it does not provide the necessary ACID compliance required for critical billing and user data, which is a non-negotiable architectural requirement for data integrity.
 
+### Migrate core decision store from PostgreSQL to MongoDB
+
+- **Severity:** HIGH
+- **Rule:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+- **Rationale:** MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.
+- **Scope:** context-store/, package.json
+- **Tags:** mongodb, postgresql, database, migration, backend
+
+**Alternatives considered (rejected):**
+- ~~Keep PostgreSQL context-store~~ — It lacked the necessary write throughput and schema flexibility required for the evolving core pipeline.
+
 ### Migrate email service to Zoho and update SMTP infrastructure
 
 - **Severity:** HIGH
@@ -237,14 +248,6 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 - **Rationale:** Inconsistent error formats, specifically plain strings from internal routes, prevent AI tools from reliably parsing and analyzing errors, leading to broken analysis workflows.
 - **Scope:** packages/api/src/routes/internal/
 - **Tags:** API, error handling, RFC 7807, internal API, convention
-
-### Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing
-
-- **Severity:** MEDIUM
-- **Rule:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-- **Rationale:** The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.
-- **Scope:** packages/decision-store/src/schema.ts
-- **Tags:** vector-database, embeddings, PostgreSQL, HNSW, OpenAI, text-embedding-3-small
 
 ### Use cosine distance over L2 for semantic text embedding similarity with pgvector HNSW
 
