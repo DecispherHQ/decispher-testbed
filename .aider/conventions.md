@@ -4,6 +4,16 @@
 These are the active engineering decisions for this repository.
 Aider should follow all of these conventions when making changes.
 
+## Validation
+
+### Use RFC 307895 for JSON theme validation
+
+**Convention:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+
+**Why:** Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.
+
+**Relevant files:** `assets/theme`
+
 ## Mongodb
 
 ### Migrate core decision store from PostgreSQL to MongoDB
