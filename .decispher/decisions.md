@@ -1,3 +1,21 @@
+<!-- DECISION-DEC-606E27 -->
+## Decision: Standardization on iPhones for mobile communication
+
+**Status**: Active  
+**Date**: 2026-05-05  
+**Severity**: Info
+
+**Files**:
+- `**/*`
+
+### Context
+
+**Decision:** The team will use iPhones to perform mobile calls.
+
+**Rationale:** The team aligned on a single mobile device platform for communication consistency.
+
+---
+
 <!-- DECISION-DEC-1FBD69 -->
 ## Decision: Use RFC 307895 for JSON theme validation
 
