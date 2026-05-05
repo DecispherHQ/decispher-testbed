@@ -1,23 +1,23 @@
 {
   "$schema": "https://decispher.dev/schemas/context-rules/v1.json",
   "specVersion": "1.0.0",
-  "generatedAt": "2026-05-05T12:33:13.125Z",
+  "generatedAt": "2026-05-05T12:33:53.121Z",
   "companyId": "1489dcdc-ef7f-4cc5-b0cb-b453efa059f4",
   "meta": {
-    "totalRules": 28,
+    "totalRules": 29,
     "rulesByType": {
       "decision": 21,
       "convention": 2,
       "constraint": 2,
       "rationale": 0,
-      "ownership": 1,
+      "ownership": 2,
       "history": 1,
       "plan": 1
     },
     "rulesBySeverity": {
       "CRITICAL": 2,
       "HIGH": 15,
-      "MEDIUM": 9,
+      "MEDIUM": 10,
       "LOW": 2
     },
     "generator": "decispher-ai-blocker@1.0.0"
@@ -1511,6 +1511,70 @@
       },
       "createdAt": "2026-04-18T13:26:33.042Z",
       "updatedAt": "2026-05-02T16:26:16.796Z",
+      "version": 2,
+      "createdBy": "U05F9P78LTG",
+      "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
+    },
+    {
+      "id": "43a78d92-5543-412c-9be3-00596ee8ce65",
+      "type": "ownership",
+      "title": "Ownership of Billing Module",
+      "problem": null,
+      "decision": "Replace all usages of double with string to represent money transactions in src/billing.ts.",
+      "rationale": "Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.",
+      "severity": "MEDIUM",
+      "status": "active",
+      "confidence": 0.38,
+      "affectedFiles": [
+        "packages/api/src/billing/"
+      ],
+      "tags": [
+        "billing",
+        "ownership",
+        "team"
+      ],
+      "alternatives": [],
+      "sources": [
+        {
+          "type": "slack",
+          "confidence": 0.38,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1776518686.983299",
+            "channelId": "C0ANM3QAQMN",
+            "channelName": "decispher-live-test",
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit"
+          }
+        },
+        {
+          "type": "slack",
+          "confidence": 0.48,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777984088.950089",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": null,
+            "channelName": null,
+            "slackTeamId": null,
+            "triggeredBy": null,
+            "detectionMethod": "explicit",
+            "triggeredByName": null
+          },
+          "snippet": "Replace all usages of double with string to represent money transactions in src/billing.ts."
+        }
+      ],
+      "supersededBy": null,
+      "enforcement": {
+        "blockOnViolation": false,
+        "requiresExplicitOverride": false,
+        "filePatterns": [
+          "packages/api/src/billing/"
+        ],
+        "exemptPatterns": []
+      },
+      "createdAt": "2026-04-18T13:24:50.857Z",
+      "updatedAt": "2026-05-05T12:33:52.890Z",
       "version": 2,
       "createdBy": "U05F9P78LTG",
       "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
