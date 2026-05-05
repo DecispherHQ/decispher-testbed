@@ -57,8 +57,8 @@ Violating these decisions requires explicit approval.
 - **Do NOT:** MEDIUM severity specification (The HIGH severity version was explicitly selected as the authoritative and canonical standard.)
 
 ### Establish ownership and modification constraints for credits and billing system (HIGH)
-- **Decision:** Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
-- **Rationale:** To ensure accountability and maintain architectural integrity of the financial ledger and billing configuration, specific code ownership and structural constraints have been formalized.
+- **Decision:** Replace all usage of the double type for money representations with the string type in src/billing.ts.
+- **Rationale:** Using floating-point numbers (doubles) for currency leads to rounding errors and precision issues due to IEEE 754 binary representation. Using strings ensures that exact decimal precision is maintained during financial calculations.
 - **Affected files:** `packages/api/src/routes/credits.ts`, `packages/decision-store/src/repositories/credit-repository.ts`, `packages/common/src/types/credits.ts`
 
 ### Define Model Fallback Ordering Strategy for API Rate Limits (HIGH)
@@ -149,16 +149,6 @@ Violating these decisions requires explicit approval.
 - **Decision:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
 - **Rationale:** Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.
 - **Do NOT:** Adopt a microservices architecture by splitting recorder and analyzer into separate gRPC services. (The previous attempt in Phase 1 led to brutal deployment complexity for a 3-person team, consuming 40% of their time debugging inter-service authentication and network failures.)
-
-### Ownership of Billing Module (MEDIUM)
-- **Decision:** The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.
-- **Rationale:** This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.
-- **Affected files:** `packages/api/src/billing/`
-
-### Standardize on PostgreSQL and Redis; Prohibit MongoDB (CRITICAL)
-- **Decision:** MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
-- **Rationale:** ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.
-- **Do NOT:** MongoDB (MongoDB was rejected because it does not provide the necessary ACID compliance required for critical billing and user data, which is a non-negotiable architectural requirement for data integrity.)
 
 ### Define LLM Model Combinations for Saver, Balanced, Pro, and Super Effort Modes (HIGH)
 - **Decision:** The specific LLM model combinations for the multi-provider effort modes were finalized: Saver mode uses `gemini-flash` for detection, extraction, and format. Balanced mode uses `gemini-flash` for detection, `claude-haiku` for extraction, and `gpt-4o-mini` for format. Pro mode uses `gemini-flash` for detection, `claude-sonnet` for extraction, and `gpt-4o-mini` for format. Super mode uses `gemini-flash` for detection, `claude-opus` for extraction, and `claude-sonnet` for format.
