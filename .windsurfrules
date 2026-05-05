@@ -114,3 +114,8 @@ Cascade MUST respect these rules when generating or modifying code.
 - The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.
   Reason: This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.
   Files: packages/api/src/billing/
+
+## [LOW]
+
+- The team will use iPhones to perform mobile calls.
+  Reason: The team aligned on a single mobile device platform for communication consistency.
