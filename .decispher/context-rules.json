@@ -1,12 +1,12 @@
 {
   "$schema": "https://decispher.dev/schemas/context-rules/v1.json",
   "specVersion": "1.0.0",
-  "generatedAt": "2026-05-05T12:17:28.883Z",
+  "generatedAt": "2026-05-05T12:20:51.663Z",
   "companyId": "1489dcdc-ef7f-4cc5-b0cb-b453efa059f4",
   "meta": {
-    "totalRules": 29,
+    "totalRules": 30,
     "rulesByType": {
-      "decision": 20,
+      "decision": 21,
       "convention": 2,
       "constraint": 3,
       "rationale": 0,
@@ -18,11 +18,64 @@
       "CRITICAL": 3,
       "HIGH": 15,
       "MEDIUM": 10,
-      "LOW": 1
+      "LOW": 2
     },
     "generator": "decispher-ai-blocker@1.0.0"
   },
   "rules": [
+    {
+      "id": "0170331f-f276-46d6-a601-54093718039f",
+      "type": "decision",
+      "title": "Replace awk with sed in src/payment.ts bash scripts",
+      "problem": "Current awk commands used within the bash script in src/payment.ts are causing performance delays.",
+      "decision": "Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.",
+      "rationale": "The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.",
+      "severity": "LOW",
+      "status": "active",
+      "confidence": 0.48,
+      "affectedFiles": [
+        "src/payment.ts"
+      ],
+      "tags": [
+        "performance",
+        "bash",
+        "refactoring",
+        "scripting"
+      ],
+      "alternatives": [],
+      "sources": [
+        {
+          "type": "slack",
+          "confidence": 0.48,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777983539.585479",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777983539585479?thread_ts=1777983539.585479&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands."
+        }
+      ],
+      "supersededBy": null,
+      "enforcement": {
+        "blockOnViolation": false,
+        "requiresExplicitOverride": false,
+        "filePatterns": [
+          "src/payment.ts"
+        ],
+        "exemptPatterns": []
+      },
+      "createdAt": "2026-05-05T12:19:32.050Z",
+      "updatedAt": "2026-05-05T12:20:51.371Z",
+      "version": 1,
+      "createdBy": "U05F9P78LTG",
+      "reviewedBy": "U05F9P78LTG"
+    },
     {
       "id": "606e27a4-4b72-485e-94dd-7a2008e80874",
       "type": "decision",
