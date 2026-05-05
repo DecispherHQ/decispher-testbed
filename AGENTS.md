@@ -49,3 +49,9 @@ Any code change that violates these decisions MUST be flagged.
 | We decided to use cosine distance for semantic similarity search of text embeddings with pgvector HNSW for deduplication. | Cosine distance is invariant to vector magnitude, meaning it only considers the direction of vectors. This property is precisely what is desired for semantic similarity of text embeddings, as it allows for accurate comparison of semantic meaning regardless of variations in embedding vector norms. L2 (Euclidean) distance, on the other hand, would incorrectly penalize vectors with different magnitudes, even if they share the same semantic direction. | * |
 | Implemented Redis semantic caching for LLM embedding calls. The cache key is a hash of the input text, model, and provider. The cache entries have a Time-To-Live (TTL) of 1 hour. | Redis was a natural extension since it is already in use for BullMQ and session caching. This implementation reduced redundant embedding calls by approximately 40% in tests. | * |
 | The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review. | This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance. | packages/api/src/billing/ |
+
+### LOW
+
+| Decision | Rationale | Files |
+|----------|-----------|-------|
+| The team will use iPhones to perform mobile calls. | The team aligned on a single mobile device platform for communication consistency. | * |
