@@ -73,6 +73,9 @@
 
 ## General Conventions
 
+- **Use RFC 307895 for JSON theme validation:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+  *(Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.)*
+
 - **Standardize on HNSW for new vector indexes:** All new vector indexes must be created using the HNSW algorithm. Existing IVFFlat indexes (specifically in the llm_cache table) are to be migrated to HNSW in Sprint 16.
   *(HNSW is the current architectural standard for vector indexing. The previous rejection of the migration to HNSW was due to operational risks in production, not a lack of performance or technical suitability of HNSW.)*
 
