@@ -8,6 +8,11 @@ Violating these decisions requires explicit approval.
 
 ## Active Decisions
 
+### Replace awk with sed in src/payment.ts bash scripts (LOW)
+- **Decision:** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
+- **Rationale:** The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.
+- **Affected files:** `src/payment.ts`
+
 ### Standardization on iPhones for mobile communication (LOW)
 - **Decision:** The team will use iPhones to perform mobile calls.
 - **Rationale:** The team aligned on a single mobile device platform for communication consistency.
