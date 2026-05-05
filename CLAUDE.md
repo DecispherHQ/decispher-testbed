@@ -8,6 +8,10 @@ Violating these decisions requires explicit approval.
 
 ## Active Decisions
 
+### Standardization on iPhones for mobile communication (LOW)
+- **Decision:** The team will use iPhones to perform mobile calls.
+- **Rationale:** The team aligned on a single mobile device platform for communication consistency.
+
 ### Use RFC 307895 for JSON theme validation (MEDIUM)
 - **Decision:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
 - **Rationale:** Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.
