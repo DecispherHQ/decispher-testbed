@@ -73,6 +73,9 @@
 
 ## General Conventions
 
+- **Standardization on iPhones for mobile communication:** The team will use iPhones to perform mobile calls.
+  *(The team aligned on a single mobile device platform for communication consistency.)*
+
 - **Use RFC 307895 for JSON theme validation:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
   *(Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.)*
 
