@@ -282,6 +282,14 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 - **Scope:** packages/api/src/billing/
 - **Tags:** billing, ownership, team
 
+### Replace awk with sed in src/payment.ts bash scripts
+
+- **Severity:** LOW
+- **Rule:** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
+- **Rationale:** The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.
+- **Scope:** src/payment.ts
+- **Tags:** performance, bash, refactoring, scripting
+
 ### Standardization on iPhones for mobile communication
 
 - **Severity:** LOW
