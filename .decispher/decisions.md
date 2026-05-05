@@ -1,3 +1,44 @@
+<!-- DECISION-DEC-017033 -->
+## Decision: Replace awk with sed in src/payment.ts bash scripts
+
+**Status**: Active  
+**Date**: 2026-05-05  
+**Severity**: Info
+
+**Files**:
+- `src/payment.ts`
+
+**Rules**:
+```json
+{
+  "conditions": [
+    {
+      "type": "file",
+      "pattern": "src/payment.ts",
+      "content_rules": [
+        {
+          "mode": "string",
+          "patterns": [
+            "awk"
+          ]
+        }
+      ]
+    }
+  ],
+  "match_mode": "all"
+}
+```
+
+### Context
+
+**Problem:** Current awk commands used within the bash script in src/payment.ts are causing performance delays.
+
+**Decision:** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
+
+**Rationale:** The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.
+
+---
+
 <!-- DECISION-DEC-606E27 -->
 ## Decision: Standardization on iPhones for mobile communication
 
