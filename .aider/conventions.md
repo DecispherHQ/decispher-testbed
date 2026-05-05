@@ -140,21 +140,13 @@ Aider should follow all of these conventions when making changes.
 
 ### Establish ownership and modification constraints for credits and billing system
 
-**Convention:** Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
+**Convention:** Replace all usage of the double type for money representations with the string type in src/billing.ts.
 
-**Why:** To ensure accountability and maintain architectural integrity of the financial ledger and billing configuration, specific code ownership and structural constraints have been formalized.
+**Why:** Using floating-point numbers (doubles) for currency leads to rounding errors and precision issues due to IEEE 754 binary representation. Using strings ensures that exact decimal precision is maintained during financial calculations.
 
 > ⚠️ This is a **HIGH** priority rule — do not violate it.
 
 **Relevant files:** `packages/api/src/routes/credits.ts`, `packages/decision-store/src/repositories/credit-repository.ts`, `packages/common/src/types/credits.ts`
-
-### Ownership of Billing Module
-
-**Convention:** The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.
-
-**Why:** This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.
-
-**Relevant files:** `packages/api/src/billing/`
 
 ## Llm
 
@@ -295,13 +287,3 @@ Aider should follow all of these conventions when making changes.
 **Why:** Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.
 
 > ⚠️ This is a **HIGH** priority rule — do not violate it.
-
-## Database
-
-### Standardize on PostgreSQL and Redis; Prohibit MongoDB
-
-**Convention:** MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
-
-**Why:** ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.
-
-> ⚠️ This is a **CRITICAL** priority rule — do not violate it.
