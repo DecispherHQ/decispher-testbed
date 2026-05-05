@@ -148,6 +148,14 @@ Aider should follow all of these conventions when making changes.
 
 **Relevant files:** `packages/api/src/routes/credits.ts`, `packages/decision-store/src/repositories/credit-repository.ts`, `packages/common/src/types/credits.ts`
 
+### Ownership of Billing Module
+
+**Convention:** Replace all usages of double with string to represent money transactions in src/billing.ts.
+
+**Why:** Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.
+
+**Relevant files:** `packages/api/src/billing/`
+
 ## Llm
 
 ### Define Model Fallback Ordering Strategy for API Rate Limits
