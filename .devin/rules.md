@@ -36,16 +36,6 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 **Alternatives considered (rejected):**
 - ~~MongoDB for analytics events~~ — It violates an active architectural constraint due to its lack of native ACID compliance, which is non-negotiable for billing and user data within our stack.
 
-### Standardize on PostgreSQL and Redis; Prohibit MongoDB
-
-- **Severity:** CRITICAL
-- **Rule:** MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
-- **Rationale:** ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.
-- **Tags:** database, postgresql, redis, mongodb, data-storage, acid
-
-**Alternatives considered (rejected):**
-- ~~MongoDB~~ — MongoDB was rejected because it does not provide the necessary ACID compliance required for critical billing and user data, which is a non-negotiable architectural requirement for data integrity.
-
 ### Migrate core decision store from PostgreSQL to MongoDB
 
 - **Severity:** HIGH
@@ -87,8 +77,8 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 ### Establish ownership and modification constraints for credits and billing system
 
 - **Severity:** HIGH
-- **Rule:** Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
-- **Rationale:** To ensure accountability and maintain architectural integrity of the financial ledger and billing configuration, specific code ownership and structural constraints have been formalized.
+- **Rule:** Replace all usage of the double type for money representations with the string type in src/billing.ts.
+- **Rationale:** Using floating-point numbers (doubles) for currency leads to rounding errors and precision issues due to IEEE 754 binary representation. Using strings ensures that exact decimal precision is maintained during financial calculations.
 - **Scope:** packages/api/src/routes/credits.ts, packages/decision-store/src/repositories/credit-repository.ts, packages/common/src/types/credits.ts
 - **Tags:** billing, ownership, credits, compliance
 
@@ -273,14 +263,6 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 - **Rule:** Implemented Redis semantic caching for LLM embedding calls. The cache key is a hash of the input text, model, and provider. The cache entries have a Time-To-Live (TTL) of 1 hour.
 - **Rationale:** Redis was a natural extension since it is already in use for BullMQ and session caching. This implementation reduced redundant embedding calls by approximately 40% in tests.
 - **Tags:** redis, caching, llm, embeddings, performance, optimization
-
-### Ownership of Billing Module
-
-- **Severity:** MEDIUM
-- **Rule:** The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.
-- **Rationale:** This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.
-- **Scope:** packages/api/src/billing/
-- **Tags:** billing, ownership, team
 
 ### Replace awk with sed in src/payment.ts bash scripts
 
