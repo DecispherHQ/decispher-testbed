@@ -4,6 +4,14 @@
 These are the active engineering decisions for this repository.
 Aider should follow all of these conventions when making changes.
 
+## Mobile
+
+### Standardization on iPhones for mobile communication
+
+**Convention:** The team will use iPhones to perform mobile calls.
+
+**Why:** The team aligned on a single mobile device platform for communication consistency.
+
 ## Validation
 
 ### Use RFC 307895 for JSON theme validation
