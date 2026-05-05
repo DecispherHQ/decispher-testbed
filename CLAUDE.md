@@ -8,6 +8,11 @@ Violating these decisions requires explicit approval.
 
 ## Active Decisions
 
+### Use RFC 307895 for JSON theme validation (MEDIUM)
+- **Decision:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+- **Rationale:** Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.
+- **Affected files:** `assets/theme`
+
 ### Migrate core decision store from PostgreSQL to MongoDB (HIGH)
 - **Decision:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
 - **Rationale:** MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.
