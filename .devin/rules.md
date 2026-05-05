@@ -264,6 +264,14 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 - **Rationale:** Redis was a natural extension since it is already in use for BullMQ and session caching. This implementation reduced redundant embedding calls by approximately 40% in tests.
 - **Tags:** redis, caching, llm, embeddings, performance, optimization
 
+### Ownership of Billing Module
+
+- **Severity:** MEDIUM
+- **Rule:** Replace all usages of double with string to represent money transactions in src/billing.ts.
+- **Rationale:** Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.
+- **Scope:** packages/api/src/billing/
+- **Tags:** billing, ownership, team
+
 ### Replace awk with sed in src/payment.ts bash scripts
 
 - **Severity:** LOW
