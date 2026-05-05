@@ -103,9 +103,13 @@ Before writing or modifying code, review these rules and do not violate them.
 27. 🟡 **[MEDIUM]** Implemented Redis semantic caching for LLM embedding calls. The cache key is a hash of the input text, model, and provider. The cache entries have a Time-To-Live (TTL) of 1 hour.
    - **Why:** Redis was a natural extension since it is already in use for BullMQ and session caching. This implementation reduced redundant embedding calls by approximately 40% in tests.
 
-28. 🟢 **[LOW]** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
+28. 🟡 **[MEDIUM]** Replace all usages of double with string to represent money transactions in src/billing.ts.
+   - **Why:** Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.
+   - **Files:** `packages/api/src/billing/`
+
+29. 🟢 **[LOW]** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
    - **Why:** The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.
    - **Files:** `src/payment.ts`
 
-29. 🟢 **[LOW]** The team will use iPhones to perform mobile calls.
+30. 🟢 **[LOW]** The team will use iPhones to perform mobile calls.
    - **Why:** The team aligned on a single mobile device platform for communication consistency.
