@@ -4,6 +4,16 @@
 These are the active engineering decisions for this repository.
 Aider should follow all of these conventions when making changes.
 
+## Performance
+
+### Replace awk with sed in src/payment.ts bash scripts
+
+**Convention:** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
+
+**Why:** The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.
+
+**Relevant files:** `src/payment.ts`
+
 ## Mobile
 
 ### Standardization on iPhones for mobile communication
