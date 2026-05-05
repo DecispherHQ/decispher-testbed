@@ -281,3 +281,10 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 - **Rationale:** This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.
 - **Scope:** packages/api/src/billing/
 - **Tags:** billing, ownership, team
+
+### Standardization on iPhones for mobile communication
+
+- **Severity:** LOW
+- **Rule:** The team will use iPhones to perform mobile calls.
+- **Rationale:** The team aligned on a single mobile device platform for communication consistency.
+- **Tags:** mobile, iphone, communication
