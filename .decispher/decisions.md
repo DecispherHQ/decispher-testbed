@@ -1057,6 +1057,44 @@
 
 ---
 
+<!-- DECISION-OWN-43A78D -->
+## Decision: Ownership of Billing Module
+
+**Status**: Active  
+**Date**: 2026-04-18  
+**Severity**: Warning
+
+**Files**:
+- `packages/api/src/billing/`
+
+**Rules**:
+```json
+{
+  "conditions": [
+    {
+      "type": "file",
+      "pattern": "packages/api/src/billing/**/*.ts",
+      "content_rules": [
+        {
+          "mode": "regex",
+          "start": 0,
+          "pattern": "number\\s*[:=]\\s*double|double\\s+\\w+"
+        }
+      ]
+    }
+  ],
+  "match_mode": "all"
+}
+```
+
+### Context
+
+**Decision:** Replace all usages of double with string to represent money transactions in src/billing.ts.
+
+**Rationale:** Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.
+
+---
+
 <!-- DECISION-DEC-B6869B -->
 ## Decision: Define LLM Model Combinations for Saver, Balanced, Pro, and Super Effort Modes
 
