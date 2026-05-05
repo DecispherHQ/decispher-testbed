@@ -1,12 +1,12 @@
 {
   "$schema": "https://decispher.dev/schemas/context-rules/v1.json",
   "specVersion": "1.0.0",
-  "generatedAt": "2026-05-05T10:03:57.578Z",
+  "generatedAt": "2026-05-05T12:17:28.883Z",
   "companyId": "1489dcdc-ef7f-4cc5-b0cb-b453efa059f4",
   "meta": {
-    "totalRules": 28,
+    "totalRules": 29,
     "rulesByType": {
-      "decision": 19,
+      "decision": 20,
       "convention": 2,
       "constraint": 3,
       "rationale": 0,
@@ -18,11 +18,54 @@
       "CRITICAL": 3,
       "HIGH": 15,
       "MEDIUM": 10,
-      "LOW": 0
+      "LOW": 1
     },
     "generator": "decispher-ai-blocker@1.0.0"
   },
   "rules": [
+    {
+      "id": "606e27a4-4b72-485e-94dd-7a2008e80874",
+      "type": "decision",
+      "title": "Standardization on iPhones for mobile communication",
+      "problem": null,
+      "decision": "The team will use iPhones to perform mobile calls.",
+      "rationale": "The team aligned on a single mobile device platform for communication consistency.",
+      "severity": "LOW",
+      "status": "active",
+      "confidence": 0.45,
+      "affectedFiles": [],
+      "tags": [
+        "mobile",
+        "iphone",
+        "communication"
+      ],
+      "alternatives": [],
+      "sources": [
+        {
+          "type": "slack",
+          "confidence": 0.45,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777983344.187829",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777983344187829?thread_ts=1777983344.187829&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "The team will use iPhones to perform mobile calls."
+        }
+      ],
+      "supersededBy": null,
+      "enforcement": null,
+      "createdAt": "2026-05-05T12:16:07.372Z",
+      "updatedAt": "2026-05-05T12:17:28.718Z",
+      "version": 1,
+      "createdBy": "U05F9P78LTG",
+      "reviewedBy": "U05F9P78LTG"
+    },
     {
       "id": "1fbd69ae-f638-48bd-869d-cd54a993f0b0",
       "type": "decision",
