@@ -1,3 +1,62 @@
+<!-- DECISION-DEC-017033 -->
+## Decision: Replace awk with sed in src/payment.ts bash scripts
+
+**Status**: Active  
+**Date**: 2026-05-05  
+**Severity**: Info
+
+**Files**:
+- `src/payment.ts`
+
+**Rules**:
+```json
+{
+  "conditions": [
+    {
+      "type": "file",
+      "pattern": "src/payment.ts",
+      "content_rules": [
+        {
+          "mode": "string",
+          "patterns": [
+            "awk"
+          ]
+        }
+      ]
+    }
+  ],
+  "match_mode": "all"
+}
+```
+
+### Context
+
+**Problem:** Current awk commands used within the bash script in src/payment.ts are causing performance delays.
+
+**Decision:** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
+
+**Rationale:** The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.
+
+---
+
+<!-- DECISION-DEC-606E27 -->
+## Decision: Standardization on iPhones for mobile communication
+
+**Status**: Active  
+**Date**: 2026-05-05  
+**Severity**: Info
+
+**Files**:
+- `**/*`
+
+### Context
+
+**Decision:** The team will use iPhones to perform mobile calls.
+
+**Rationale:** The team aligned on a single mobile device platform for communication consistency.
+
+---
+
 <!-- DECISION-DEC-1FBD69 -->
 ## Decision: Use RFC 307895 for JSON theme validation
 
@@ -295,10 +354,11 @@
       "content_rules": [
         {
           "mode": "regex",
-          "start": 1,
-          "pattern": "(credit_ledger|DrizzleCreditRepository|EFFORT_MODE_CONFIGS)"
+          "start": 0,
+          "pattern": "number|double"
         }
-      ]
+      ],
+      "content_match_mode": "any"
     }
   ],
   "match_mode": "all"
@@ -309,9 +369,9 @@
 
 **Problem:** Uncertainty regarding ownership of the billing module and the requirements for implementing new effort modes.
 
-**Decision:** Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
+**Decision:** Replace all usage of the double type for money representations with the string type in src/billing.ts.
 
-**Rationale:** To ensure accountability and maintain architectural integrity of the financial ledger and billing configuration, specific code ownership and structural constraints have been formalized.
+**Rationale:** Using floating-point numbers (doubles) for currency leads to rounding errors and precision issues due to IEEE 754 binary representation. Using strings ensures that exact decimal precision is maintained during financial calculations.
 
 ---
 
@@ -1013,82 +1073,25 @@
   "conditions": [
     {
       "type": "file",
-      "pattern": "packages/api/src/billing/**",
+      "pattern": "packages/api/src/billing/**/*.ts",
       "content_rules": [
         {
-          "mode": "string",
-          "patterns": [
-            "stripe",
-            "credit",
-            "ledger",
-            "invoice",
-            "payment",
-            "billing"
-          ]
+          "mode": "regex",
+          "start": 0,
+          "pattern": "number\\s*[:=]\\s*double|double\\s+\\w+"
         }
-      ],
-      "content_match_mode": "any"
+      ]
     }
   ],
-  "match_mode": "any"
+  "match_mode": "all"
 }
 ```
 
 ### Context
 
-**Decision:** The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.
+**Decision:** Replace all usages of double with string to represent money transactions in src/billing.ts.
 
-**Rationale:** This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.
-
----
-
-<!-- DECISION-CNST-3998D8 -->
-## Decision: Standardize on PostgreSQL and Redis; Prohibit MongoDB
-
-**Status**: Active  
-**Date**: 2026-04-18  
-**Severity**: Critical
-
-**Rules**:
-```json
-{
-  "conditions": [
-    {
-      "type": "file",
-      "exclude": [
-        "**/node_modules/**",
-        "**/vendor/**",
-        "**/*.lock",
-        "**/*.md"
-      ],
-      "pattern": "**/*",
-      "content_rules": [
-        {
-          "mode": "string",
-          "patterns": [
-            "mongodb",
-            "mongo",
-            "mongoose"
-          ]
-        }
-      ],
-      "content_match_mode": "any"
-    }
-  ],
-  "match_mode": "any"
-}
-```
-
-### Context
-
-**Problem:** Ensure ACID compliance for critical billing and user data, and standardize data storage technologies to maintain data integrity and consistency.
-
-**Decision:** MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
-
-**Rationale:** ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.
-
-**Alternatives Considered:**
-- **MongoDB**: MongoDB was rejected because it does not provide the necessary ACID compliance required for critical billing and user data, which is a non-negotiable architectural requirement for data integrity.
+**Rationale:** Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.
 
 ---
 

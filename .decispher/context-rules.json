@@ -1,28 +1,124 @@
 {
   "$schema": "https://decispher.dev/schemas/context-rules/v1.json",
   "specVersion": "1.0.0",
-  "generatedAt": "2026-05-05T10:03:57.578Z",
+  "generatedAt": "2026-05-05T12:33:53.121Z",
   "companyId": "1489dcdc-ef7f-4cc5-b0cb-b453efa059f4",
   "meta": {
-    "totalRules": 28,
+    "totalRules": 29,
     "rulesByType": {
-      "decision": 19,
+      "decision": 21,
       "convention": 2,
-      "constraint": 3,
+      "constraint": 2,
       "rationale": 0,
       "ownership": 2,
       "history": 1,
       "plan": 1
     },
     "rulesBySeverity": {
-      "CRITICAL": 3,
+      "CRITICAL": 2,
       "HIGH": 15,
       "MEDIUM": 10,
-      "LOW": 0
+      "LOW": 2
     },
     "generator": "decispher-ai-blocker@1.0.0"
   },
   "rules": [
+    {
+      "id": "0170331f-f276-46d6-a601-54093718039f",
+      "type": "decision",
+      "title": "Replace awk with sed in src/payment.ts bash scripts",
+      "problem": "Current awk commands used within the bash script in src/payment.ts are causing performance delays.",
+      "decision": "Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.",
+      "rationale": "The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.",
+      "severity": "LOW",
+      "status": "active",
+      "confidence": 0.48,
+      "affectedFiles": [
+        "src/payment.ts"
+      ],
+      "tags": [
+        "performance",
+        "bash",
+        "refactoring",
+        "scripting"
+      ],
+      "alternatives": [],
+      "sources": [
+        {
+          "type": "slack",
+          "confidence": 0.48,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777983539.585479",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777983539585479?thread_ts=1777983539.585479&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands."
+        }
+      ],
+      "supersededBy": null,
+      "enforcement": {
+        "blockOnViolation": false,
+        "requiresExplicitOverride": false,
+        "filePatterns": [
+          "src/payment.ts"
+        ],
+        "exemptPatterns": []
+      },
+      "createdAt": "2026-05-05T12:19:32.050Z",
+      "updatedAt": "2026-05-05T12:20:51.371Z",
+      "version": 1,
+      "createdBy": "U05F9P78LTG",
+      "reviewedBy": "U05F9P78LTG"
+    },
+    {
+      "id": "606e27a4-4b72-485e-94dd-7a2008e80874",
+      "type": "decision",
+      "title": "Standardization on iPhones for mobile communication",
+      "problem": null,
+      "decision": "The team will use iPhones to perform mobile calls.",
+      "rationale": "The team aligned on a single mobile device platform for communication consistency.",
+      "severity": "LOW",
+      "status": "active",
+      "confidence": 0.45,
+      "affectedFiles": [],
+      "tags": [
+        "mobile",
+        "iphone",
+        "communication"
+      ],
+      "alternatives": [],
+      "sources": [
+        {
+          "type": "slack",
+          "confidence": 0.45,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777983344.187829",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777983344187829?thread_ts=1777983344.187829&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "The team will use iPhones to perform mobile calls."
+        }
+      ],
+      "supersededBy": null,
+      "enforcement": null,
+      "createdAt": "2026-05-05T12:16:07.372Z",
+      "updatedAt": "2026-05-05T12:17:28.718Z",
+      "version": 1,
+      "createdBy": "U05F9P78LTG",
+      "reviewedBy": "U05F9P78LTG"
+    },
     {
       "id": "1fbd69ae-f638-48bd-869d-cd54a993f0b0",
       "type": "decision",
@@ -443,8 +539,8 @@
       "type": "ownership",
       "title": "Establish ownership and modification constraints for credits and billing system",
       "problem": "Uncertainty regarding ownership of the billing module and the requirements for implementing new effort modes.",
-      "decision": "Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.",
-      "rationale": "To ensure accountability and maintain architectural integrity of the financial ledger and billing configuration, specific code ownership and structural constraints have been formalized.",
+      "decision": "Replace all usage of the double type for money representations with the string type in src/billing.ts.",
+      "rationale": "Using floating-point numbers (doubles) for currency leads to rounding errors and precision issues due to IEEE 754 binary representation. Using strings ensures that exact decimal precision is maintained during financial calculations.",
       "severity": "HIGH",
       "status": "active",
       "confidence": 0.43,
@@ -479,6 +575,22 @@
             "triggeredByName": null
           },
           "snippet": "Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must st…"
+        },
+        {
+          "type": "slack",
+          "confidence": 0.48,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777984088.950089",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777984088950089?thread_ts=1777984088.950089&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "Replace all usage of the double type for money representations with the string type in src/billing.ts."
         }
       ],
       "supersededBy": null,
@@ -493,8 +605,8 @@
         "exemptPatterns": []
       },
       "createdAt": "2026-04-22T06:14:04.546Z",
-      "updatedAt": "2026-04-22T11:43:40.979Z",
-      "version": 1,
+      "updatedAt": "2026-05-05T12:33:12.799Z",
+      "version": 2,
       "createdBy": "U_SARA",
       "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
     },
@@ -1408,8 +1520,8 @@
       "type": "ownership",
       "title": "Ownership of Billing Module",
       "problem": null,
-      "decision": "The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.",
-      "rationale": "This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.",
+      "decision": "Replace all usages of double with string to represent money transactions in src/billing.ts.",
+      "rationale": "Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.",
       "severity": "MEDIUM",
       "status": "active",
       "confidence": 0.38,
@@ -1434,6 +1546,22 @@
             "triggeredBy": "U05F9P78LTG",
             "detectionMethod": "explicit"
           }
+        },
+        {
+          "type": "slack",
+          "confidence": 0.48,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777984088.950089",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": null,
+            "channelName": null,
+            "slackTeamId": null,
+            "triggeredBy": null,
+            "detectionMethod": "explicit",
+            "triggeredByName": null
+          },
+          "snippet": "Replace all usages of double with string to represent money transactions in src/billing.ts."
         }
       ],
       "supersededBy": null,
@@ -1446,62 +1574,10 @@
         "exemptPatterns": []
       },
       "createdAt": "2026-04-18T13:24:50.857Z",
-      "updatedAt": "2026-04-18T13:25:43.024Z",
-      "version": 1,
+      "updatedAt": "2026-05-05T12:33:52.890Z",
+      "version": 2,
       "createdBy": "U05F9P78LTG",
-      "reviewedBy": "U05F9P78LTG"
-    },
-    {
-      "id": "3998d8e6-48a3-4161-860b-be094e4feb87",
-      "type": "constraint",
-      "title": "Standardize on PostgreSQL and Redis; Prohibit MongoDB",
-      "problem": "Ensure ACID compliance for critical billing and user data, and standardize data storage technologies to maintain data integrity and consistency.",
-      "decision": "MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.",
-      "rationale": "ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.",
-      "severity": "CRITICAL",
-      "status": "active",
-      "confidence": 0.74,
-      "affectedFiles": [],
-      "tags": [
-        "database",
-        "postgresql",
-        "redis",
-        "mongodb",
-        "data-storage",
-        "acid"
-      ],
-      "alternatives": [
-        {
-          "option": "MongoDB",
-          "reasonRejected": "MongoDB was rejected because it does not provide the necessary ACID compliance required for critical billing and user data, which is a non-negotiable architectural requirement for data integrity."
-        }
-      ],
-      "sources": [
-        {
-          "type": "slack",
-          "confidence": 0.5,
-          "ref": {
-            "priority": "high",
-            "threadTs": "1776518248.102319",
-            "channelId": "C0ANM3QAQMN",
-            "channelName": "decispher-live-test",
-            "triggeredBy": "U05F9P78LTG",
-            "detectionMethod": "explicit"
-          }
-        }
-      ],
-      "supersededBy": null,
-      "enforcement": {
-        "blockOnViolation": false,
-        "requiresExplicitOverride": false,
-        "filePatterns": [],
-        "exemptPatterns": []
-      },
-      "createdAt": "2026-04-18T13:17:48.935Z",
-      "updatedAt": "2026-04-18T23:32:02.232Z",
-      "version": 1,
-      "createdBy": "U05F9P78LTG",
-      "reviewedBy": "U05F9P78LTG"
+      "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
     },
     {
       "id": "b6869b8c-7d43-47d4-9cd6-dddb0f9f92b9",
