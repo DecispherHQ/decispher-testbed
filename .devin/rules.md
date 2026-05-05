@@ -46,6 +46,17 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 **Alternatives considered (rejected):**
 - ~~MongoDB~~ — MongoDB was rejected because it does not provide the necessary ACID compliance required for critical billing and user data, which is a non-negotiable architectural requirement for data integrity.
 
+### Migrate core decision store from PostgreSQL to MongoDB
+
+- **Severity:** HIGH
+- **Rule:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+- **Rationale:** MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.
+- **Scope:** context-store/, package.json
+- **Tags:** mongodb, postgresql, database, migration, backend
+
+**Alternatives considered (rejected):**
+- ~~Keep PostgreSQL context-store~~ — It lacked the necessary write throughput and schema flexibility required for the evolving core pipeline.
+
 ### Migrate email service to Zoho and update SMTP infrastructure
 
 - **Severity:** HIGH
@@ -152,8 +163,8 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 ### Defer Microservices Adoption, Maintain Monorepo Architecture
 
 - **Severity:** HIGH
-- **Rule:** To defer the adoption of a microservices architecture and continue with a monorepo architecture utilizing shared packages. The decision to revisit microservices will be made when the team size reaches 8 or more members.
-- **Rationale:** An earlier attempt (Phase 1) to split the recorder and analyzer into separate gRPC services resulted in brutal deployment complexity for a 3-person team. This led to approximately 40% of the team's time being spent debugging inter-service authentication and network failures, making it unmanageable for the current team size.
+- **Rule:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
+- **Rationale:** Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.
 - **Tags:** architecture, microservices, monorepo, team-size, deployment
 
 **Alternatives considered (rejected):**
@@ -176,6 +187,14 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 **Alternatives considered (rejected):**
 - ~~Continue with current fragmented multi-provider setup (Gemini-Flash for detection, Claude-Sonnet for extraction, GPT-4o-mini for formatting).~~ — This approach is unmaintainable, costly (Claude-Sonnet accounts for 60% of the LLM bill), and suffers from inconsistent provider availability issues.
 - ~~Consolidate to a single LLM provider for all pipeline steps.~~ — This would limit flexibility, potentially sacrificing accuracy for high-tier companies or forcing budget-conscious companies to pay for more expensive models than necessary. It would also lead to vendor lock-in and a single point of failure for LLM stability.
+
+### Use RFC 307895 for JSON theme validation
+
+- **Severity:** MEDIUM
+- **Rule:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+- **Rationale:** Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.
+- **Scope:** assets/theme
+- **Tags:** validation, json, theme, rfc307895
 
 ### Standardize on HNSW for new vector indexes
 
@@ -237,14 +256,6 @@ Devin MUST follow all rules below. Do not deviate without explicit instruction.
 - **Rationale:** Inconsistent error formats, specifically plain strings from internal routes, prevent AI tools from reliably parsing and analyzing errors, leading to broken analysis workflows.
 - **Scope:** packages/api/src/routes/internal/
 - **Tags:** API, error handling, RFC 7807, internal API, convention
-
-### Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing
-
-- **Severity:** MEDIUM
-- **Rule:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-- **Rationale:** The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.
-- **Scope:** packages/decision-store/src/schema.ts
-- **Tags:** vector-database, embeddings, PostgreSQL, HNSW, OpenAI, text-embedding-3-small
 
 ### Use cosine distance over L2 for semantic text embedding similarity with pgvector HNSW
 

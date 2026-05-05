@@ -1,3 +1,47 @@
+<!-- DECISION-DEC-1FBD69 -->
+## Decision: Use RFC 307895 for JSON theme validation
+
+**Status**: Active  
+**Date**: 2026-05-03  
+**Severity**: Warning
+
+**Files**:
+- `assets/theme`
+
+### Context
+
+**Problem:** Incorrect JSON files in the assets/theme folder can break the system.
+
+**Decision:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+
+**Rationale:** Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.
+
+---
+
+<!-- DECISION-DEC-5EE331 -->
+## Decision: Migrate core decision store from PostgreSQL to MongoDB
+
+**Status**: Active  
+**Date**: 2026-05-03  
+**Severity**: Critical
+
+**Files**:
+- `context-store/`
+- `package.json`
+
+### Context
+
+**Problem:** Current PostgreSQL-based context-store cannot handle the required write throughput and lacks the schema flexibility needed for the decision storage pipeline.
+
+**Decision:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+
+**Rationale:** MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.
+
+**Alternatives Considered:**
+- **Keep PostgreSQL context-store**: It lacked the necessary write throughput and schema flexibility required for the evolving core pipeline.
+
+---
+
 <!-- DECISION-DEC-E90978 -->
 ## Decision: Migrate email service to Zoho and update SMTP infrastructure
 
@@ -734,60 +778,6 @@
 
 ---
 
-<!-- DECISION-DEC-F27705 -->
-## Decision: Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing
-
-**Status**: Active  
-**Date**: 2026-04-18  
-**Severity**: Warning
-
-**Files**:
-- `packages/decision-store/src/schema.ts`
-
-**Rules**:
-```json
-{
-  "conditions": [
-    {
-      "type": "file",
-      "pattern": "packages/decision-store/src/schema.ts",
-      "content_rules": [
-        {
-          "mode": "string",
-          "pattern": "text-embedding-3-small"
-        },
-        {
-          "mode": "string",
-          "pattern": "1536"
-        },
-        {
-          "mode": "string",
-          "pattern": "knowledge_chunks"
-        },
-        {
-          "mode": "string",
-          "pattern": "ef_construction=200"
-        },
-        {
-          "mode": "string",
-          "pattern": "m=16"
-        }
-      ],
-      "content_match_mode": "all"
-    }
-  ],
-  "match_mode": "all"
-}
-```
-
-### Context
-
-**Decision:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-
-**Rationale:** The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.
-
----
-
 <!-- DECISION-DEC-C7CE09 -->
 ## Decision: We use PostgreSQL with pgvector for all data storage
 
@@ -980,34 +970,17 @@
   "conditions": [
     {
       "type": "file",
-      "pattern": "**/*.{proto,go,ts,js,py,java,cs,yaml,yml,json,Dockerfile}",
+      "pattern": "**/*",
       "content_rules": [
         {
           "mode": "regex",
-          "start": 0,
-          "pattern": "(^|\\W)(new|separate|standalone)\\s+(grpc|microservice|distributed)\\s+(service|api|component|deployment)($|\\W)",
-          "patterns": []
-        },
-        {
-          "mode": "regex",
-          "start": 0,
-          "pattern": "(^|\\W)(recorder|analyzer)\\s+service\\s+(definition|interface|deployment)($|\\W)",
-          "patterns": []
-        },
-        {
-          "mode": "string",
-          "patterns": [
-            "GrpcServiceBuilder",
-            "MicroserviceClient",
-            "ServiceDiscoveryRegistration",
-            "ApiGatewayConfiguration"
-          ]
+          "start": 1,
+          "pattern": "(?i)grpc|microservice|service-mesh|distributed-tracing"
         }
-      ],
-      "content_match_mode": "any"
+      ]
     }
   ],
-  "match_mode": "any"
+  "match_mode": "all"
 }
 ```
 
@@ -1015,9 +988,9 @@
 
 **Problem:** The team considered adopting a microservices architecture for the recorder and analyzer components but faced challenges.
 
-**Decision:** To defer the adoption of a microservices architecture and continue with a monorepo architecture utilizing shared packages. The decision to revisit microservices will be made when the team size reaches 8 or more members.
+**Decision:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
 
-**Rationale:** An earlier attempt (Phase 1) to split the recorder and analyzer into separate gRPC services resulted in brutal deployment complexity for a 3-person team. This led to approximately 40% of the team's time being spent debugging inter-service authentication and network failures, making it unmanageable for the current team size.
+**Rationale:** Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.
 
 **Alternatives Considered:**
 - **Adopt a microservices architecture by splitting recorder and analyzer into separate gRPC services.**: The previous attempt in Phase 1 led to brutal deployment complexity for a 3-person team, consuming 40% of their time debugging inter-service authentication and network failures.

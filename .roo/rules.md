@@ -3,6 +3,10 @@
 
 ## ⚠️ Critical Rules — Do Not Violate
 
+- **Migrate core decision store from PostgreSQL to MongoDB:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+  *(MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.)*
+  Files: context-store/, package.json
+
 - **Migrate email service to Zoho and update SMTP infrastructure:** Migrate all email services to Zoho and update the SMTP server infrastructure, including the implementation of new routing rules to block any traffic to the legacy SMTP server.
   *(The team decided to move to Zoho to consolidate mailing services and address the limitations or overhead associated with the existing legacy SMTP infrastructure.)*
   Files: infrastructure/mail, services/smtp, config/email_routing
@@ -55,8 +59,8 @@
 - **Plan to Migrate Application Infrastructure from Railway to AWS ECS:** The trigger metric for initiating the AWS migration has been adjusted from 20 paying customers to 30 paying customers. The Q3 2026 timeline for the migration still holds.
   *(This adjustment is due to Railway costs being more predictable than initially expected. Additionally, the VPC isolation requirement, which was a significant factor, only applies to enterprise customers, a segment we are targeting at a later stage.)*
 
-- **Defer Microservices Adoption, Maintain Monorepo Architecture:** To defer the adoption of a microservices architecture and continue with a monorepo architecture utilizing shared packages. The decision to revisit microservices will be made when the team size reaches 8 or more members.
-  *(An earlier attempt (Phase 1) to split the recorder and analyzer into separate gRPC services resulted in brutal deployment complexity for a 3-person team. This led to approximately 40% of the team's time being spent debugging inter-service authentication and network failures, making it unmanageable for the current team size.)*
+- **Defer Microservices Adoption, Maintain Monorepo Architecture:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
+  *(Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.)*
 
 - **Standardize on PostgreSQL and Redis; Prohibit MongoDB:** MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
   *(ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.)*
@@ -68,6 +72,9 @@
   *(This approach allows companies with high context volume (Tier 3+) to pay extra for Claude-Sonnet's accuracy where needed, while companies with tighter budgets can use more cost-effective options like Gemini-Flash for all steps. It also decouples our infrastructure from individual LLM vendor stability and enables independent contract negotiations with different providers (Anthropic, OpenAI, Google).)*
 
 ## General Conventions
+
+- **Use RFC 307895 for JSON theme validation:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+  *(Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.)*
 
 - **Standardize on HNSW for new vector indexes:** All new vector indexes must be created using the HNSW algorithm. Existing IVFFlat indexes (specifically in the llm_cache table) are to be migrated to HNSW in Sprint 16.
   *(HNSW is the current architectural standard for vector indexing. The previous rejection of the migration to HNSW was due to operational risks in production, not a lack of performance or technical suitability of HNSW.)*
@@ -86,9 +93,6 @@
 
 - **Enforce RFC 7807 for Internal API Error Formats:** All internal API routes must adhere to the RFC 7807 error format, consistent with public-facing API routes.
   *(Inconsistent error formats, specifically plain strings from internal routes, prevent AI tools from reliably parsing and analyzing errors, leading to broken analysis workflows.)*
-
-- **Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-  *(The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.)*
 
 - **Use cosine distance over L2 for semantic text embedding similarity with pgvector HNSW:** We decided to use cosine distance for semantic similarity search of text embeddings with pgvector HNSW for deduplication.
   *(Cosine distance is invariant to vector magnitude, meaning it only considers the direction of vectors. This property is precisely what is desired for semantic similarity of text embeddings, as it allows for accurate comparison of semantic meaning regardless of variations in embedding vector norms. L2 (Euclidean) distance, on the other hand, would incorrectly penalize vectors with different magnitudes, even if they share the same semantic direction.)*

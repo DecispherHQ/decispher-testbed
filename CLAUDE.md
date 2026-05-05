@@ -8,6 +8,17 @@ Violating these decisions requires explicit approval.
 
 ## Active Decisions
 
+### Use RFC 307895 for JSON theme validation (MEDIUM)
+- **Decision:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+- **Rationale:** Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.
+- **Affected files:** `assets/theme`
+
+### Migrate core decision store from PostgreSQL to MongoDB (HIGH)
+- **Decision:** Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
+- **Rationale:** MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.
+- **Affected files:** `context-store/`, `package.json`
+- **Do NOT:** Keep PostgreSQL context-store (It lacked the necessary write throughput and schema flexibility required for the evolving core pipeline.)
+
 ### Migrate email service to Zoho and update SMTP infrastructure (HIGH)
 - **Decision:** Migrate all email services to Zoho and update the SMTP server infrastructure, including the implementation of new routing rules to block any traffic to the legacy SMTP server.
 - **Rationale:** The team decided to move to Zoho to consolidate mailing services and address the limitations or overhead associated with the existing legacy SMTP infrastructure.
@@ -103,11 +114,6 @@ Violating these decisions requires explicit approval.
 - **Rationale:** The strategy is designed to provide flexibility and optimization across different pipeline steps and 'effort modes'. By configuring providers per step and allowing overrides based on company effort modes, the system can balance cost, performance, and model quality according to specific requirements, from 'Saver' (likely cost-optimized) to 'Super' (likely highest quality/cost). The multi-provider abstraction facilitates this dynamic selection.
 - **Affected files:** `packages/analyzer/`
 
-### Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing (MEDIUM)
-- **Decision:** We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.
-- **Rationale:** The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.
-- **Affected files:** `packages/decision-store/src/schema.ts`
-
 ### We use PostgreSQL with pgvector for all data storage (CRITICAL)
 - **Decision:** After evaluating MongoDB, DynamoDB, and PostgreSQL, we chose PostgreSQL 16 with pgvector HNSW indexes. Reason: vector similarity search, ACID guarantees, and single DB for both structured data and embeddings. 
 - **Rationale:** After evaluating MongoDB, DynamoDB, and PostgreSQL, we chose PostgreSQL 16 with pgvector HNSW indexes. Reason: vector similarity search, ACID guarantees, and single DB for both structured data and embeddings. 
@@ -131,8 +137,8 @@ Violating these decisions requires explicit approval.
 - **Rationale:** This adjustment is due to Railway costs being more predictable than initially expected. Additionally, the VPC isolation requirement, which was a significant factor, only applies to enterprise customers, a segment we are targeting at a later stage.
 
 ### Defer Microservices Adoption, Maintain Monorepo Architecture (HIGH)
-- **Decision:** To defer the adoption of a microservices architecture and continue with a monorepo architecture utilizing shared packages. The decision to revisit microservices will be made when the team size reaches 8 or more members.
-- **Rationale:** An earlier attempt (Phase 1) to split the recorder and analyzer into separate gRPC services resulted in brutal deployment complexity for a 3-person team. This led to approximately 40% of the team's time being spent debugging inter-service authentication and network failures, making it unmanageable for the current team size.
+- **Decision:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
+- **Rationale:** Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.
 - **Do NOT:** Adopt a microservices architecture by splitting recorder and analyzer into separate gRPC services. (The previous attempt in Phase 1 led to brutal deployment complexity for a 3-person team, consuming 40% of their time debugging inter-service authentication and network failures.)
 
 ### Ownership of Billing Module (MEDIUM)

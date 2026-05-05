@@ -1,12 +1,12 @@
 {
   "$schema": "https://decispher.dev/schemas/context-rules/v1.json",
   "specVersion": "1.0.0",
-  "generatedAt": "2026-05-02T00:25:26.195Z",
+  "generatedAt": "2026-05-05T10:03:57.578Z",
   "companyId": "1489dcdc-ef7f-4cc5-b0cb-b453efa059f4",
   "meta": {
-    "totalRules": 27,
+    "totalRules": 28,
     "rulesByType": {
-      "decision": 18,
+      "decision": 19,
       "convention": 2,
       "constraint": 3,
       "rationale": 0,
@@ -16,13 +16,144 @@
     },
     "rulesBySeverity": {
       "CRITICAL": 3,
-      "HIGH": 14,
+      "HIGH": 15,
       "MEDIUM": 10,
       "LOW": 0
     },
     "generator": "decispher-ai-blocker@1.0.0"
   },
   "rules": [
+    {
+      "id": "1fbd69ae-f638-48bd-869d-cd54a993f0b0",
+      "type": "decision",
+      "title": "Use RFC 307895 for JSON theme validation",
+      "problem": "Incorrect JSON files in the assets/theme folder can break the system.",
+      "decision": "Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.",
+      "rationale": "Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.",
+      "severity": "MEDIUM",
+      "status": "active",
+      "confidence": 0.95,
+      "affectedFiles": [
+        "assets/theme"
+      ],
+      "tags": [
+        "validation",
+        "json",
+        "theme",
+        "rfc307895"
+      ],
+      "alternatives": [],
+      "sources": [
+        {
+          "type": "code-change",
+          "confidence": 0.95,
+          "ref": {
+            "priority": "high",
+            "threadTs": "20",
+            "channelId": "github:DecispherHQ/decispher-testbed",
+            "sourceUrl": null,
+            "channelName": "PR #20",
+            "slackTeamId": "github:DecispherHQ",
+            "triggeredBy": "decispher",
+            "detectionMethod": "explicit",
+            "triggeredByName": null
+          },
+          "snippet": "We are adopting RFC 307895 as the standard for validating all JSON files located within the assets/theme directory."
+        },
+        {
+          "type": "slack",
+          "confidence": 0.48,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777813846.219129",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777813846219129?thread_ts=1777813846.219129&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "Use RFC 307895 as the standard for validating API GET response JSON structures for theme retrieval."
+        },
+        {
+          "type": "slack",
+          "confidence": 0.45,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777814573.869059",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777814573869059?thread_ts=1777814573.869059&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme."
+        }
+      ],
+      "supersededBy": null,
+      "enforcement": null,
+      "createdAt": "2026-05-03T13:06:50.659Z",
+      "updatedAt": "2026-05-03T13:23:18.246Z",
+      "version": 3,
+      "createdBy": "decispher",
+      "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
+    },
+    {
+      "id": "5ee33115-b524-4ffe-acc3-2162a04c0d59",
+      "type": "decision",
+      "title": "Migrate core decision store from PostgreSQL to MongoDB",
+      "problem": "Current PostgreSQL-based context-store cannot handle the required write throughput and lacks the schema flexibility needed for the decision storage pipeline.",
+      "decision": "Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.",
+      "rationale": "MongoDB was chosen to accommodate high-write volume scenarios and to provide a flexible schema structure that the previous relational model failed to support efficiently.",
+      "severity": "HIGH",
+      "status": "active",
+      "confidence": 0.974,
+      "affectedFiles": [
+        "context-store/",
+        "package.json"
+      ],
+      "tags": [
+        "mongodb",
+        "postgresql",
+        "database",
+        "migration",
+        "backend"
+      ],
+      "alternatives": [
+        {
+          "option": "Keep PostgreSQL context-store",
+          "reasonRejected": "It lacked the necessary write throughput and schema flexibility required for the evolving core pipeline."
+        }
+      ],
+      "sources": [
+        {
+          "type": "code-change",
+          "confidence": 0.95,
+          "ref": {
+            "priority": "low",
+            "threadTs": "19",
+            "channelId": "github:DecispherHQ/decispher-testbed",
+            "sourceUrl": "https://github.com/DecispherHQ/decispher-testbed/pull/19",
+            "channelName": "PR #19",
+            "slackTeamId": "github:DecispherHQ",
+            "triggeredBy": null,
+            "detectionMethod": "passive",
+            "triggeredByName": null
+          },
+          "snippet": "Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities."
+        }
+      ],
+      "supersededBy": "f2770524-250d-48f2-bf4c-ea54e9744ada",
+      "enforcement": null,
+      "createdAt": "2026-05-03T00:03:02.058Z",
+      "updatedAt": "2026-05-03T11:59:59.165Z",
+      "version": 1,
+      "createdBy": "github-pr-author",
+      "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
+    },
     {
       "id": "e9097831-0c7b-43f1-895a-b115dd36c20b",
       "type": "decision",
@@ -1011,57 +1142,6 @@
       "reviewedBy": "U05F9P78LTG"
     },
     {
-      "id": "f2770524-250d-48f2-bf4c-ea54e9744ada",
-      "type": "decision",
-      "title": "Implementation details for text embeddings in PostgreSQL using OpenAI's text-embedding-3-small and HNSW indexing",
-      "problem": null,
-      "decision": "We will use the `text-embedding-3-small` OpenAI model to generate 1536-dimension embeddings. These embeddings will be stored in the `knowledge_chunks` table within PostgreSQL. The HNSW index used for vector search will be configured with `ef_construction=200` and `m=16`.",
-      "rationale": "The chosen HNSW parameters (`ef_construction=200` and `m=16`) are set to provide an optimal tradeoff between recall accuracy and search speed. The `text-embedding-3-small` model is selected for generating the text embeddings.",
-      "severity": "MEDIUM",
-      "status": "active",
-      "confidence": 0.48,
-      "affectedFiles": [
-        "packages/decision-store/src/schema.ts"
-      ],
-      "tags": [
-        "vector-database",
-        "embeddings",
-        "PostgreSQL",
-        "HNSW",
-        "OpenAI",
-        "text-embedding-3-small"
-      ],
-      "alternatives": [],
-      "sources": [
-        {
-          "type": "slack",
-          "confidence": 0.48,
-          "ref": {
-            "priority": "high",
-            "threadTs": "1776545993.253939",
-            "channelId": "C0ALJ121XLZ",
-            "channelName": "decispher-test-1",
-            "triggeredBy": "U05F9P78LTG",
-            "detectionMethod": "explicit"
-          }
-        }
-      ],
-      "supersededBy": null,
-      "enforcement": {
-        "blockOnViolation": false,
-        "requiresExplicitOverride": false,
-        "filePatterns": [
-          "packages/decision-store/src/schema.ts"
-        ],
-        "exemptPatterns": []
-      },
-      "createdAt": "2026-04-18T21:00:58.211Z",
-      "updatedAt": "2026-04-18T21:01:44.258Z",
-      "version": 1,
-      "createdBy": "U05F9P78LTG",
-      "reviewedBy": "U05F9P78LTG"
-    },
-    {
       "id": "e1408395-0737-4115-a49b-e616d5227fe5",
       "type": "decision",
       "title": "Use cosine distance over L2 for semantic text embedding similarity with pgvector HNSW",
@@ -1261,8 +1341,8 @@
       "type": "decision",
       "title": "Defer Microservices Adoption, Maintain Monorepo Architecture",
       "problem": "The team considered adopting a microservices architecture for the recorder and analyzer components but faced challenges.",
-      "decision": "To defer the adoption of a microservices architecture and continue with a monorepo architecture utilizing shared packages. The decision to revisit microservices will be made when the team size reaches 8 or more members.",
-      "rationale": "An earlier attempt (Phase 1) to split the recorder and analyzer into separate gRPC services resulted in brutal deployment complexity for a 3-person team. This led to approximately 40% of the team's time being spent debugging inter-service authentication and network failures, making it unmanageable for the current team size.",
+      "decision": "We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.",
+      "rationale": "Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.",
       "severity": "HIGH",
       "status": "active",
       "confidence": 0.48,
@@ -1292,6 +1372,22 @@
             "triggeredBy": "U05F9P78LTG",
             "detectionMethod": "explicit"
           }
+        },
+        {
+          "type": "slack",
+          "confidence": 0.5,
+          "ref": {
+            "priority": "high",
+            "threadTs": "1777739069.707459",
+            "channelId": "C0ALKBAGZQS",
+            "sourceUrl": "https://newworkspace-zdx9462.slack.com/archives/C0ALKBAGZQS/p1777739069707459?thread_ts=1777739069.707459&cid=C0ALKBAGZQS",
+            "channelName": "bot-test-1",
+            "slackTeamId": null,
+            "triggeredBy": "U05F9P78LTG",
+            "detectionMethod": "explicit",
+            "triggeredByName": "Ali Abbas"
+          },
+          "snippet": "We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions."
         }
       ],
       "supersededBy": null,
@@ -1302,10 +1398,10 @@
         "exemptPatterns": []
       },
       "createdAt": "2026-04-18T13:26:33.042Z",
-      "updatedAt": "2026-04-18T13:27:55.817Z",
-      "version": 1,
+      "updatedAt": "2026-05-02T16:26:16.796Z",
+      "version": 2,
       "createdBy": "U05F9P78LTG",
-      "reviewedBy": "U05F9P78LTG"
+      "reviewedBy": "df51fb32-47a2-48b2-ac32-3887a582a966"
     },
     {
       "id": "43a78d92-5543-412c-9be3-00596ee8ce65",
