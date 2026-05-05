@@ -150,6 +150,11 @@ Violating these decisions requires explicit approval.
 - **Rationale:** Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.
 - **Do NOT:** Adopt a microservices architecture by splitting recorder and analyzer into separate gRPC services. (The previous attempt in Phase 1 led to brutal deployment complexity for a 3-person team, consuming 40% of their time debugging inter-service authentication and network failures.)
 
+### Ownership of Billing Module (MEDIUM)
+- **Decision:** Replace all usages of double with string to represent money transactions in src/billing.ts.
+- **Rationale:** Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.
+- **Affected files:** `packages/api/src/billing/`
+
 ### Define LLM Model Combinations for Saver, Balanced, Pro, and Super Effort Modes (HIGH)
 - **Decision:** The specific LLM model combinations for the multi-provider effort modes were finalized: Saver mode uses `gemini-flash` for detection, extraction, and format. Balanced mode uses `gemini-flash` for detection, `claude-haiku` for extraction, and `gpt-4o-mini` for format. Pro mode uses `gemini-flash` for detection, `claude-sonnet` for extraction, and `gpt-4o-mini` for format. Super mode uses `gemini-flash` for detection, `claude-opus` for extraction, and `claude-sonnet` for format.
 - **Rationale:** The chosen LLM model combinations for each effort mode (Saver, Balanced, Pro, Super) were selected to provide different performance and cost profiles, aligning with the multi-provider strategy. Cost analysis confirmed that the proposed combinations, ranging from ~$0.08/1M tokens for Saver to ~$4.50/1M tokens for Super, ensure fine margins at current credit pricing.
