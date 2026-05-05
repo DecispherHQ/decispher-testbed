@@ -1,3 +1,23 @@
+<!-- DECISION-DEC-1FBD69 -->
+## Decision: Use RFC 307895 for JSON theme validation
+
+**Status**: Active  
+**Date**: 2026-05-03  
+**Severity**: Warning
+
+**Files**:
+- `assets/theme`
+
+### Context
+
+**Problem:** Incorrect JSON files in the assets/theme folder can break the system.
+
+**Decision:** Use RFC 307895 as the standard for validating user input when adding custom themes through the form at /addCustomTheme.
+
+**Rationale:** Adopting an existing RFC provides a standardized, well-documented approach to input validation, ensuring consistency and security for custom theme data handling.
+
+---
+
 <!-- DECISION-DEC-5EE331 -->
 ## Decision: Migrate core decision store from PostgreSQL to MongoDB
 
