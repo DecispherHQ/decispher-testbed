@@ -73,6 +73,9 @@
 
 ## General Conventions
 
+- **Replace awk with sed in src/payment.ts bash scripts:** Remove all awk commands from the bash script in src/payment.ts and replace them with functionally equivalent sed commands.
+  *(The team identified that the existing awk implementations are causing unnecessary performance bottlenecks; transitioning to sed is expected to resolve these latency issues.)*
+
 - **Standardization on iPhones for mobile communication:** The team will use iPhones to perform mobile calls.
   *(The team aligned on a single mobile device platform for communication consistency.)*
 
