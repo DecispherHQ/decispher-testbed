@@ -19,8 +19,8 @@
   *(The team determined that the RFC 7807 specification is outdated and no longer aligns with the current requirements and standards of the API architecture.)*
   Files: api/responses, api/error-handling
 
-- **Establish ownership and modification constraints for credits and billing system:** Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
-  *(To ensure accountability and maintain architectural integrity of the financial ledger and billing configuration, specific code ownership and structural constraints have been formalized.)*
+- **Establish ownership and modification constraints for credits and billing system:** Replace all usage of the double type for money representations with the string type in src/billing.ts.
+  *(Using floating-point numbers (doubles) for currency leads to rounding errors and precision issues due to IEEE 754 binary representation. Using strings ensures that exact decimal precision is maintained during financial calculations.)*
   Files: packages/api/src/routes/credits.ts, packages/decision-store/src/repositories/credit-repository.ts, packages/common/src/types/credits.ts
 
 - **Define Model Fallback Ordering Strategy for API Rate Limits:** Establish explicit provider fallback orderings: For extraction, use Anthropic → DeepSeek → OpenAI. For detection, use Google → OpenAI → DeepSeek.
@@ -62,9 +62,6 @@
 - **Defer Microservices Adoption, Maintain Monorepo Architecture:** We will integrate decision-guardian into our PR pipeline to enforce and track architectural decisions.
   *(Automating the verification of architectural decisions during the review process helps maintain consistency and ensures that developers adhere to established guidelines.)*
 
-- **Standardize on PostgreSQL and Redis; Prohibit MongoDB:** MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
-  *(ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.)*
-
 - **Define LLM Model Combinations for Saver, Balanced, Pro, and Super Effort Modes:** The specific LLM model combinations for the multi-provider effort modes were finalized: Saver mode uses `gemini-flash` for detection, extraction, and format. Balanced mode uses `gemini-flash` for detection, `claude-haiku` for extraction, and `gpt-4o-mini` for format. Pro mode uses `gemini-flash` for detection, `claude-sonnet` for extraction, and `gpt-4o-mini` for format. Super mode uses `gemini-flash` for detection, `claude-opus` for extraction, and `claude-sonnet` for format.
   *(The chosen LLM model combinations for each effort mode (Saver, Balanced, Pro, Super) were selected to provide different performance and cost profiles, aligning with the multi-provider strategy. Cost analysis confirmed that the proposed combinations, ranging from ~$0.08/1M tokens for Saver to ~$4.50/1M tokens for Super, ensure fine margins at current credit pricing.)*
 
@@ -105,6 +102,3 @@
 
 - **Implement Redis Semantic Caching for LLM Embedding Calls:** Implemented Redis semantic caching for LLM embedding calls. The cache key is a hash of the input text, model, and provider. The cache entries have a Time-To-Live (TTL) of 1 hour.
   *(Redis was a natural extension since it is already in use for BullMQ and session caching. This implementation reduced redundant embedding calls by approximately 40% in tests.)*
-
-- **Ownership of Billing Module:** The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.
-  *(This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.)*
