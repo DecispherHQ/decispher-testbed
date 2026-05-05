@@ -102,3 +102,6 @@
 
 - **Implement Redis Semantic Caching for LLM Embedding Calls:** Implemented Redis semantic caching for LLM embedding calls. The cache key is a hash of the input text, model, and provider. The cache entries have a Time-To-Live (TTL) of 1 hour.
   *(Redis was a natural extension since it is already in use for BullMQ and session caching. This implementation reduced redundant embedding calls by approximately 40% in tests.)*
+
+- **Ownership of Billing Module:** Replace all usages of double with string to represent money transactions in src/billing.ts.
+  *(Using string types for monetary values prevents floating-point arithmetic errors inherent in the double type, ensuring accuracy for financial calculations.)*
