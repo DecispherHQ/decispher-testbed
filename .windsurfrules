@@ -17,9 +17,6 @@ Cascade MUST respect these rules when generating or modifying code.
 - MongoDB is strictly prohibited from being integrated into the current technology stack, including for analytics events.
   Reason: There is an active and non-negotiable architectural constraint against MongoDB in the stack due to the critical requirement for ACID compliance across all billing and user data. MongoDB does not satisfy this fundamental requirement.
 
-- MongoDB is strictly prohibited in this stack due to its lack of ACID compliance. PostgreSQL will be used as the primary datastore for all persistent data, especially critical billing and user data. Redis will be used exclusively for caching purposes.
-  Reason: ACID compliance is a non-negotiable requirement for billing and user data to guarantee data integrity and consistency. PostgreSQL provides robust ACID transaction support. Adopting a standardized approach with PostgreSQL and Redis simplifies the technology stack and enforces critical data integrity requirements.
-
 ## [HIGH]
 
 - Migrate the core decision storage from PostgreSQL to MongoDB, utilizing MongoDB Atlas for vector search capabilities.
@@ -38,8 +35,8 @@ Cascade MUST respect these rules when generating or modifying code.
   Reason: The team determined that the RFC 7807 specification is outdated and no longer aligns with the current requirements and standards of the API architecture.
   Files: api/responses, api/error-handling
 
-- Sara is the primary owner of the billing module; all changes to the credit_ledger schema, DrizzleCreditRepository, and the EFFORT_MODE_CONFIGS require specific approvals from Sara and Ali. Furthermore, the system must strictly adhere to the append-only ledger constraint per ADR-019 and maintain SERIALIZABLE transaction requirements.
-  Reason: To ensure accountability and maintain architectural integrity of the financial ledger and billing configuration, specific code ownership and structural constraints have been formalized.
+- Replace all usage of the double type for money representations with the string type in src/billing.ts.
+  Reason: Using floating-point numbers (doubles) for currency leads to rounding errors and precision issues due to IEEE 754 binary representation. Using strings ensures that exact decimal precision is maintained during financial calculations.
   Files: packages/api/src/routes/credits.ts, packages/decision-store/src/repositories/credit-repository.ts, packages/common/src/types/credits.ts
 
 - Establish explicit provider fallback orderings: For extraction, use Anthropic → DeepSeek → OpenAI. For detection, use Google → OpenAI → DeepSeek.
@@ -110,10 +107,6 @@ Cascade MUST respect these rules when generating or modifying code.
 
 - Implemented Redis semantic caching for LLM embedding calls. The cache key is a hash of the input text, model, and provider. The cache entries have a Time-To-Live (TTL) of 1 hour.
   Reason: Redis was a natural extension since it is already in use for BullMQ and session caching. This implementation reduced redundant embedding calls by approximately 40% in tests.
-
-- The billing module, including Stripe integration, credit ledger, credit deduction logic, and Stripe webhook handlers, is owned by U05F9P78LTG. All changes to billing flows require their review.
-  Reason: This statement clarifies responsibility for the billing module and its components to ensure proper review and maintenance.
-  Files: packages/api/src/billing/
 
 ## [LOW]
 
